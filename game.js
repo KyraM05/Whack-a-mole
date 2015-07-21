@@ -37,9 +37,17 @@ game.bop = {
   },
   with_key: function(key){
     if (!!(game.activeMole + 1) === true && key === game.holes[game.activeMole].label){
-      this.total = this.total+1;
+		if(game.mole.isGood === false){
+			this.total = this.total+1;
+			game.mole.countdown = game.mole.countdown - 1;
+		}
+		else if(game.mole.isGood === true){
+			this.total = this.total - 3;
+			game.mole.countdown = game.mole.countdown - 1;
+		}
       game.activeMole = -1;
       this.bopped = true;
+	  
     }
     else{
       this.total = this.total-3;
@@ -123,25 +131,27 @@ game.mole = {
   eyeSize: 5,
   eyeOffset: 10, 
   eyeColor: "#000",
+  isGood: false,
+  countdown: Math.floor(Math.random() * (4 - 1)) + 1,
   draw: function(xPosition, yPosition){
-    if (game.bop.total === 4) {
+	if (this.countdown === 0) {
 		this.drawHead(xPosition, yPosition, true);
 	} else{
 		this.drawHead(xPosition, yPosition, false);
 	}
-	
     this.drawEyes(xPosition, yPosition);
     this.drawNose(xPosition, yPosition);
     this.drawWhiskers(xPosition, yPosition);
   },
   drawHead: function(xPosition, yPosition, moleisgood){
     atom.context.beginPath();
-if(moleisgood === false){	
-    atom.context.fillStyle = this.color;
-} else {
-	atom.context.fillStyle = 'yellow';
-	
-}
+	if(moleisgood === false){	
+		atom.context.fillStyle = this.color;
+		this.isGood = moleisgood;
+	} else {
+		atom.context.fillStyle = 'yellow';
+		this.isGood = moleisgood;
+	}
     atom.context.arc(xPosition, yPosition, this.size, 0, Math.PI*2); 
     atom.context.fill();
 
