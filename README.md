@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # atom
 #### a &lt;canvas&gt; game framework that does as little as possible
 
@@ -29,3 +30,6 @@ game.run()
 <script src="atom.js"></script>
 <script src="game.js"></script>
 ```
+=======
+# Whackamole
+>>>>>>> 388c9f17a93f7e59a472184f232b5cfe8bb5668c
