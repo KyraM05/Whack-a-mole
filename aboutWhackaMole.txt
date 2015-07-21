@@ -1,0 +1,5 @@
+Whack-a-mole Game
+Kyra and Pun
+	Our aesthetic was to annoy the player. We first worked by adding a file that plays automatically
+(We used an air horn sound). We also started to work on creating a "good mole" and "bad mole." If 
+you hit the good mole, you lose x amount of points. 
