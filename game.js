@@ -1,5 +1,6 @@
 game = Object.create(Game.prototype);
 game.keys = ['A', 'S', 'D', 'F'];
+var random = Math.floor(Math.random() * (30 - 5 + 1)) + 5;
 for (var i = 0; i < game.keys.length; i++){
   atom.input.bind(atom.key[game.keys[i]], game.keys[i]);
 };
@@ -22,6 +23,9 @@ game.update = function(dt) {
       game.bop.with_key(game.keys[i]);
     }
   };
+  if (game.bop.total > random){
+	 game.bop.total = game.bop.total - game.bop.total; 
+	 }
 };
 game.bop = {
   bopped: true,
@@ -38,7 +42,7 @@ game.bop = {
       this.bopped = true;
     }
     else{
-      this.total = this.total-1;
+      this.total = this.total-3;
     }
   }
 }
@@ -120,16 +124,27 @@ game.mole = {
   eyeOffset: 10, 
   eyeColor: "#000",
   draw: function(xPosition, yPosition){
-    this.drawHead(xPosition, yPosition);
+    if (game.bop.total === 4) {
+		this.drawHead(xPosition, yPosition, true);
+	} else{
+		this.drawHead(xPosition, yPosition, false);
+	}
+	
     this.drawEyes(xPosition, yPosition);
     this.drawNose(xPosition, yPosition);
     this.drawWhiskers(xPosition, yPosition);
   },
-  drawHead: function(xPosition, yPosition){
-    atom.context.beginPath(); 
+  drawHead: function(xPosition, yPosition, moleisgood){
+    atom.context.beginPath();
+if(moleisgood === false){	
     atom.context.fillStyle = this.color;
+} else {
+	atom.context.fillStyle = 'yellow';
+	
+}
     atom.context.arc(xPosition, yPosition, this.size, 0, Math.PI*2); 
     atom.context.fill();
+
   },
   drawNose: function(xPosition, yPosition){
     atom.context.beginPath(); 
@@ -160,6 +175,8 @@ game.mole = {
     atom.context.stroke();
   }
 }
+
+
 window.onblur = function() {
   return game.stop();
 };
