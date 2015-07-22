@@ -12,8 +12,14 @@ game.update = function(dt) {
     game.activeMole = Math.floor(Math.random()*4);
     atom.currentMoleTime = 0;
     if(game.bop.bopped === false){
-      game.bop.total = game.bop.total-1;
-    }
+		if(game.mole.isGood===false){
+			game.bop.total = game.bop.total-1;
+		}
+		else if(game.mole.isGood===true){
+			game.bop.total = game.bop.total;
+			game.mole.countdown = game.mole.countdown -1;
+		}
+	}
     else{
       game.bop.bopped = false;
     }
@@ -46,8 +52,7 @@ game.bop = {
 			game.mole.countdown = game.mole.countdown - 1;
 		}
       game.activeMole = -1;
-      this.bopped = true;
-	  
+      this.bopped = true; 
     }
     else{
       this.total = this.total-3;
@@ -132,11 +137,15 @@ game.mole = {
   eyeOffset: 10, 
   eyeColor: "#000",
   isGood: false,
-  countdown: Math.floor(Math.random() * (4 - 1)) + 1,
+  countdown: Math.floor(Math.random() * (4-1)) + 1,
   draw: function(xPosition, yPosition){
 	if (this.countdown === 0) {
 		this.drawHead(xPosition, yPosition, true);
-	} else{
+	}
+	else if (this.countdown < 0){
+		this.countdown = this.countdown + Math.floor(Math.random() * (5 - 2)) + 2;
+	}
+	else{
 		this.drawHead(xPosition, yPosition, false);
 	}
     this.drawEyes(xPosition, yPosition);
@@ -150,7 +159,7 @@ game.mole = {
 		this.isGood = moleisgood;
 	} else {
 		atom.context.fillStyle = 'yellow';
-		this.isGood = moleisgood;
+		this.isGood = moleisgood; 
 	}
     atom.context.arc(xPosition, yPosition, this.size, 0, Math.PI*2); 
     atom.context.fill();
@@ -185,8 +194,6 @@ game.mole = {
     atom.context.stroke();
   }
 }
-
-
 window.onblur = function() {
   return game.stop();
 };
