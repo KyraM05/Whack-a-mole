@@ -5,7 +5,7 @@ for (var i = 0; i < game.keys.length; i++){
   atom.input.bind(atom.key[game.keys[i]], game.keys[i]);
 };
 atom.currentMoleTime = 0;
-atom.tillNewMole = 2;
+atom.tillNewMole = .75;
 game.update = function(dt) {
   atom.currentMoleTime = atom.currentMoleTime + dt;
   if (atom.currentMoleTime > atom.tillNewMole){
@@ -14,6 +14,7 @@ game.update = function(dt) {
     if(game.bop.bopped === false){
 		if(game.mole.isGood===false){
 			game.bop.total = game.bop.total-1;
+			game.mole.countdown = game.mole.countdown -1; 
 		}
 		else if(game.mole.isGood===true){
 			game.bop.total = game.bop.total;
@@ -23,6 +24,13 @@ game.update = function(dt) {
     else{
       game.bop.bopped = false;
     }
+	if(game.bop.total < -10){
+		var answer = confirm("You lose!");
+		game.stop();
+		if(answer){
+			game.stop();
+		}
+	}
   };
   for (var i = 0; i < game.keys.length; i++){
     if (atom.input.pressed(game.keys[i])){
